@@ -193,45 +193,168 @@ const UploadPage = () => {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#fafbfc' }}>
+    <div
+      style={{
+        display: isMobile ? 'block' : 'flex',
+        minHeight: '100vh',
+        background: '#fafbfc',
+      }}
+    >
       {/* Menú lateral */}
-      <aside style={{ width: 260, background: '#f5f6fa', padding: '32px 0', borderRight: '1px solid #eee', minHeight: '100vh' }}>
-        <div style={{ fontWeight: 800, fontSize: 22, marginLeft: 32, marginBottom: 8 }}>Knowlite</div>
-        <div style={{ color: '#888', fontSize: 14, marginLeft: 32, marginBottom: 32 }}>AI-powered transcription</div>
-        <nav>
-          <div style={{ display: 'flex', alignItems: 'center', padding: '10px 32px', background: view === 'upload' ? '#e9ecf6' : '#fff', borderRadius: 8, margin: '0 16px 8px 16px', fontWeight: 600, cursor: 'pointer' }} onClick={() => setView('upload')}>
-            <span style={{ fontSize: 20, marginRight: 12 }}>+</span> Nuevo Archivo
+      {!isMobile && (
+        <aside
+          style={{
+            width: 260,
+            background: '#f5f6fa',
+            padding: '32px 0',
+            borderRight: '1px solid #eee',
+            minHeight: '100vh',
+          }}
+        >
+          <div style={{ fontWeight: 800, fontSize: 22, marginLeft: 32, marginBottom: 8 }}>Knowlite</div>
+          <div style={{ color: '#888', fontSize: 14, marginLeft: 32, marginBottom: 32 }}>AI-powered transcription</div>
+          <nav>
+            <div style={{ display: 'flex', alignItems: 'center', padding: '10px 32px', background: view === 'upload' ? '#e9ecf6' : '#fff', borderRadius: 8, margin: '0 16px 8px 16px', fontWeight: 600, cursor: 'pointer' }} onClick={() => setView('upload')}>
+              <span style={{ fontSize: 20, marginRight: 12 }}>+</span> Nuevo Archivo
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', padding: '10px 32px', background: view === 'files' ? '#e9ecf6' : '#fff', borderRadius: 8, margin: '0 16px 8px 16px', fontWeight: 500, color: '#444', cursor: 'pointer' }} onClick={handleShowFiles}>
+              <span style={{ fontSize: 18, marginRight: 12 }}>📄</span> Mis archivos
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', padding: '10px 32px', margin: '0 16px', fontWeight: 500, color: '#444', cursor: 'pointer' }} onClick={handleGoProfile}>
+              <span style={{ fontSize: 18, marginRight: 12 }}>👤</span> Perfil
+            </div>
+          </nav>
+        </aside>
+      )}
+      {/* Menú superior en mobile */}
+      {isMobile && (
+        <nav
+          style={{
+            width: '100%',
+            background: '#f5f6fa',
+            padding: '12px 0',
+            borderBottom: '1px solid #eee',
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            position: 'sticky',
+            top: 0,
+            zIndex: 10,
+          }}
+        >
+          <div style={{ fontWeight: 800, fontSize: 18 }}>Knowlite</div>
+          <div
+            style={{ fontWeight: 600, color: view === 'upload' ? '#3b4cca' : '#444', cursor: 'pointer' }}
+            onClick={() => setView('upload')}
+          >
+            + Nuevo
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', padding: '10px 32px', background: view === 'files' ? '#e9ecf6' : '#fff', borderRadius: 8, margin: '0 16px 8px 16px', fontWeight: 500, color: '#444', cursor: 'pointer' }} onClick={handleShowFiles}>
-            <span style={{ fontSize: 18, marginRight: 12 }}>📄</span> Mis archivos
+          <div
+            style={{ fontWeight: 600, color: view === 'files' ? '#3b4cca' : '#444', cursor: 'pointer' }}
+            onClick={handleShowFiles}
+          >
+            📄 Archivos
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', padding: '10px 32px', margin: '0 16px', fontWeight: 500, color: '#444', cursor: 'pointer' }} onClick={handleGoProfile}>
-            <span style={{ fontSize: 18, marginRight: 12 }}>👤</span> Perfil
+          <div
+            style={{ fontWeight: 600, color: '#444', cursor: 'pointer' }}
+            onClick={handleGoProfile}
+          >
+            👤 Perfil
           </div>
         </nav>
-      </aside>
+      )}
       {/* Contenido principal */}
-      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '60px 0' }}>
+      <main
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          padding: isMobile ? '24px 0' : '60px 0',
+          width: '100%',
+        }}
+      >
         {view === 'upload' && (
-          <div style={{ width: 500, maxWidth: '90%', marginBottom: 32 }}>
-            <h2 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>Subir Archivo</h2>
-            <div style={{ border: '2px dashed #c3c8d4', borderRadius: 12, padding: 40, textAlign: 'center', background: '#fff', marginBottom: 32 }}>
-              <div style={{ fontWeight: 600, fontSize: 18, marginBottom: 8 }}>Arrastra y suelta tus archivos aca</div>
-              <div style={{ color: '#666', fontSize: 15, marginBottom: 20 }}>Soporta audio en formato MP3</div>
-              <button type="button" onClick={handleSelectFiles} style={{ background: '#f5f6fa', border: '1px solid #c3c8d4', borderRadius: 8, padding: '10px 28px', fontWeight: 600, fontSize: 16, cursor: 'pointer' }} disabled={loading}>
+          <div
+            style={{
+              width: isMobile ? '100%' : 500,
+              maxWidth: isMobile ? '100%' : '90%',
+              marginBottom: 32,
+              padding: isMobile ? 0 : undefined,
+            }}
+          >
+            <h2
+              style={{
+                fontSize: isMobile ? 22 : 28,
+                fontWeight: 700,
+                marginBottom: 16,
+                textAlign: isMobile ? 'center' : 'left',
+              }}
+            >
+              Subir Archivo
+            </h2>
+            <div
+              style={{
+                border: '2px dashed #c3c8d4',
+                borderRadius: 12,
+                padding: isMobile ? 18 : 40,
+                textAlign: 'center',
+                background: '#fff',
+                marginBottom: 32,
+              }}
+            >
+              <div style={{ fontWeight: 600, fontSize: isMobile ? 15 : 18, marginBottom: 8 }}>
+                Selecciona y sube tus archivos de audio aca
+              </div>
+              <div style={{ color: '#666', fontSize: isMobile ? 13 : 15, marginBottom: 20 }}>
+                Soporta audio en formato MP3
+              </div>
+              <button
+                type="button"
+                onClick={handleSelectFiles}
+                style={{
+                  background: '#f5f6fa',
+                  border: '1px solid #c3c8d4',
+                  borderRadius: 8,
+                  padding: isMobile ? '8px 18px' : '10px 28px',
+                  fontWeight: 600,
+                  fontSize: isMobile ? 14 : 16,
+                  cursor: 'pointer',
+                }}
+                disabled={loading}
+              >
                 {loading ? 'Subiendo...' : 'Select files'}
               </button>
-              <input ref={fileInputRef} type="file" style={{ display: 'none' }} multiple={false} accept="audio/mp3,audio/mpeg" onChange={handleFileChange} />
+              <input
+                ref={fileInputRef}
+                type="file"
+                style={{ display: 'none' }}
+                multiple={false}
+                accept="audio/mp3,audio/mpeg"
+                onChange={handleFileChange}
+              />
               {error && <div style={{ color: 'red', marginTop: 16 }}>{error}</div>}
             </div>
-            <textarea 
-              placeholder="Aquí aparecerá la transcripción..." 
-              style={{ width: '100%', minHeight: 180, border: '1px solid #ddd', borderRadius: 8, padding: 16, fontSize: 17, resize: 'vertical', background: '#f8f9fb', marginBottom: 16 }} 
+            <textarea
+              placeholder="Aquí aparecerá la transcripción..."
+              style={{
+                width: '100%',
+                minHeight: isMobile ? 120 : 180,
+                border: '1px solid #ddd',
+                borderRadius: 8,
+                padding: isMobile ? 10 : 16,
+                fontSize: isMobile ? 15 : 17,
+                resize: 'vertical',
+                background: '#f8f9fb',
+                marginBottom: 16,
+                color: '#111', // Forzar texto negro
+              }}
               value={description}
               onChange={e => setDescription(e.target.value)}
               disabled={loading}
             />
-            <button 
+            <button
               onClick={handleSave}
               style={{
                 width: '100%',
@@ -239,11 +362,11 @@ const UploadPage = () => {
                 color: '#fff',
                 border: 'none',
                 borderRadius: 8,
-                padding: '14px 0',
+                padding: isMobile ? '10px 0' : '14px 0',
                 fontWeight: 700,
-                fontSize: 18,
+                fontSize: isMobile ? 16 : 18,
                 cursor: 'pointer',
-                marginBottom: 8
+                marginBottom: 8,
               }}
               disabled={loading || !description}
             >
@@ -252,8 +375,24 @@ const UploadPage = () => {
           </div>
         )}
         {view === 'files' && (
-          <div style={{ width: 700, maxWidth: '95%', marginBottom: 32 }}>
-            <h2 style={{ fontSize: 28, fontWeight: 700, marginBottom: 24 }}>Mis archivos</h2>
+          <div
+            style={{
+              width: isMobile ? '100%' : 700,
+              maxWidth: isMobile ? '100%' : '95%',
+              marginBottom: 32,
+              padding: isMobile ? 0 : undefined,
+            }}
+          >
+            <h2
+              style={{
+                fontSize: isMobile ? 20 : 28,
+                fontWeight: 700,
+                marginBottom: 24,
+                textAlign: isMobile ? 'center' : 'left',
+              }}
+            >
+              Mis archivos
+            </h2>
             {filesLoading ? (
               <div style={{ fontSize: 18 }}>Cargando archivos...</div>
             ) : filesError ? (
@@ -470,18 +609,19 @@ const UploadPage = () => {
         onClick={handleLogout}
         style={{
           position: 'fixed',
-          left: 32,
+          left: isMobile ? '50%' : 32,
           bottom: 32,
+          transform: isMobile ? 'translateX(-50%)' : 'none',
           background: '#fff',
           color: '#e53935',
           border: '2px solid #e53935',
           borderRadius: 8,
-          padding: '12px 28px',
-          fontSize: 18,
+          padding: isMobile ? '10px 18px' : '12px 28px',
+          fontSize: isMobile ? 16 : 18,
           fontWeight: 700,
           boxShadow: '0 2px 12px #0002',
           cursor: 'pointer',
-          zIndex: 1000
+          zIndex: 1000,
         }}
         title="Cerrar sesión"
       >
@@ -491,4 +631,4 @@ const UploadPage = () => {
   );
 };
 
-export default UploadPage; 
+export default UploadPage;
