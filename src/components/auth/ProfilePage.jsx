@@ -109,7 +109,7 @@ const ProfilePage = () => {
               type="text"
               value={name}
               onChange={e => setName(e.target.value)}
-              style={{ width: '100%', padding: 14, border: '1px solid #e0e6ed', borderRadius: 8, fontSize: 17, background: '#f7f9fb', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: 14, border: '1px solid #e0e6ed', borderRadius: 8, fontSize: 17, background: '#f7f9fb', boxSizing: 'border-box', color: '#888' }}
             />
           </div>
           <div style={{ marginBottom: 28 }}>
@@ -117,7 +117,7 @@ const ProfilePage = () => {
             <input
               type="email"
               value={email}
-              style={{ width: '100%', padding: 14, border: '1px solid #e0e6ed', borderRadius: 8, fontSize: 17, background: '#f7f9fb', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: 14, border: '1px solid #e0e6ed', borderRadius: 8, fontSize: 17, background: '#f7f9fb', boxSizing: 'border-box', color: '#888' }}
               disabled
             />
           </div>
@@ -127,7 +127,7 @@ const ProfilePage = () => {
               type="date"
               value={birthdate}
               onChange={e => setBirthdate(e.target.value)}
-              style={{ width: '100%', padding: 14, border: '1px solid #e0e6ed', borderRadius: 8, fontSize: 17, background: '#f7f9fb', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: 14, border: '1px solid #e0e6ed', borderRadius: 8, fontSize: 17, background: '#f7f9fb', boxSizing: 'border-box', color: '#888' }}
             />
           </div>
           <div style={{ marginBottom: 36 }}>
@@ -136,7 +136,7 @@ const ProfilePage = () => {
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              style={{ width: '100%', padding: 14, border: '1px solid #e0e6ed', borderRadius: 8, fontSize: 17, background: '#f7f9fb', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: 14, border: '1px solid #e0e6ed', borderRadius: 8, fontSize: 17, background: '#f7f9fb', boxSizing: 'border-box', color: '#888' }}
               placeholder="Nueva contraseña"
             />
           </div>
@@ -157,4 +157,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage; 
+export default ProfilePage;
