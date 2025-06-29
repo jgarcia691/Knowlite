@@ -22,6 +22,9 @@ const UploadPage = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [fileToDelete, setFileToDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [summary, setSummary] = useState('');
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [summaryError, setSummaryError] = useState('');
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const isMobile = window.innerWidth <= 700;
@@ -348,7 +351,7 @@ const UploadPage = () => {
                 resize: 'vertical',
                 background: '#f8f9fb',
                 marginBottom: 16,
-                color: '#111', // Forzar texto negro
+                color: '#111',
               }}
               value={description}
               onChange={e => setDescription(e.target.value)}

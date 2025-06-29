@@ -4,6 +4,9 @@ import { jsPDF } from 'jspdf';
 
 const FileDetailsModal = ({ file, isOpen, onClose }) => {
   const [showSummaryModal, setShowSummaryModal] = useState(false);
+  const [summary, setSummary] = useState('');
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [summaryError, setSummaryError] = useState('');
 
   if (!isOpen || !file) return null;
 
@@ -30,6 +33,27 @@ const FileDetailsModal = ({ file, isOpen, onClose }) => {
     doc.setFontSize(12);
     doc.text(file.texto || '', 10, 65, { maxWidth: 180 });
     doc.save(`${file.nombre || 'transcripcion'}.pdf`);
+  };
+
+  const handleShowSummaryModal = async () => {
+    setShowSummaryModal(true);
+    setSummary('');
+    setSummaryError('');
+    setSummaryLoading(true);
+    try {
+      const response = await fetch('https://knowlite-backend.vercel.app/api/resumir', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texto: file.texto })
+      });
+      if (!response.ok) throw new Error('Error al generar el resumen');
+      const data = await response.json();
+      setSummary(data.resumen || '');
+    } catch (err) {
+      setSummaryError('No se pudo generar el resumen.');
+    } finally {
+      setSummaryLoading(false);
+    }
   };
 
   return (
@@ -126,7 +150,7 @@ const FileDetailsModal = ({ file, isOpen, onClose }) => {
             Descargar PDF
           </button>
           <button
-            onClick={() => setShowSummaryModal(true)}
+            onClick={handleShowSummaryModal}
             style={{
               padding: '10px 24px',
               border: 'none',
@@ -178,14 +202,32 @@ const FileDetailsModal = ({ file, isOpen, onClose }) => {
             background: '#fff',
             borderRadius: 12,
             padding: 32,
-            width: 400,
-            maxWidth: '90%',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)'
+            width: 500,
+            maxWidth: '95vw',
+            maxHeight: '80vh',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
+            display: 'flex',
+            flexDirection: 'column',
           }}>
             <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 18 }}>Resumen IA</h3>
-            <div style={{ color: '#888', fontSize: 16, marginBottom: 24 }}>
-              Aquí aparecerá el resumen generado por IA.<br /> (Funcionalidad próximamente)
-            </div>
+            {summaryLoading && <div style={{ color: '#888', marginBottom: 16 }}>Generando resumen...</div>}
+            {summaryError && <div style={{ color: 'red', marginBottom: 12 }}>{summaryError}</div>}
+            {summary && (
+              <div style={{
+                background: '#f5f6fa',
+                border: '1px solid #c3c8d4',
+                borderRadius: 8,
+                padding: 16,
+                marginBottom: 16,
+                color: '#222',
+                fontSize: 16,
+                maxHeight: 250,
+                overflowY: 'auto',
+                whiteSpace: 'pre-wrap',
+              }}>
+                {summary}
+              </div>
+            )}
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <button
                 onClick={() => setShowSummaryModal(false)}
@@ -210,4 +252,4 @@ const FileDetailsModal = ({ file, isOpen, onClose }) => {
   );
 };
 
-export default FileDetailsModal; 
+export default FileDetailsModal;
