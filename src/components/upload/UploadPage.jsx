@@ -3,6 +3,9 @@ import { uploadAudioFile } from '../../api/knowLiteApi';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import FileDetailsModal from '../common/FileDetailsModal';
+import UploadMenu from './UploadMenu';
+import UploadForm from './UploadForm';
+import FilesList from './FilesList';
 
 const UploadPage = () => {
   const fileInputRef = useRef(null);
@@ -203,70 +206,13 @@ const UploadPage = () => {
         background: '#fafbfc',
       }}
     >
-      {/* Menú lateral */}
-      {!isMobile && (
-        <aside
-          style={{
-            width: 260,
-            background: '#f5f6fa',
-            padding: '32px 0',
-            borderRight: '1px solid #eee',
-            minHeight: '100vh',
-          }}
-        >
-          <div style={{ fontWeight: 800, fontSize: 22, marginLeft: 32, marginBottom: 8 }}>Knowlite</div>
-          <div style={{ color: '#888', fontSize: 14, marginLeft: 32, marginBottom: 32 }}>AI-powered transcription</div>
-          <nav>
-            <div style={{ display: 'flex', alignItems: 'center', padding: '10px 32px', background: view === 'upload' ? '#e9ecf6' : '#fff', borderRadius: 8, margin: '0 16px 8px 16px', fontWeight: 600, cursor: 'pointer' }} onClick={() => setView('upload')}>
-              <span style={{ fontSize: 20, marginRight: 12 }}>+</span> Nuevo Archivo
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', padding: '10px 32px', background: view === 'files' ? '#e9ecf6' : '#fff', borderRadius: 8, margin: '0 16px 8px 16px', fontWeight: 500, color: '#444', cursor: 'pointer' }} onClick={handleShowFiles}>
-              <span style={{ fontSize: 18, marginRight: 12 }}>📄</span> Mis archivos
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', padding: '10px 32px', margin: '0 16px', fontWeight: 500, color: '#444', cursor: 'pointer' }} onClick={handleGoProfile}>
-              <span style={{ fontSize: 18, marginRight: 12 }}>👤</span> Perfil
-            </div>
-          </nav>
-        </aside>
-      )}
-      {/* Menú superior en mobile */}
-      {isMobile && (
-        <nav
-          style={{
-            width: '100%',
-            background: '#f5f6fa',
-            padding: '12px 0',
-            borderBottom: '1px solid #eee',
-            display: 'flex',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            position: 'sticky',
-            top: 0,
-            zIndex: 10,
-          }}
-        >
-          <div style={{ fontWeight: 800, fontSize: 18 }}>Knowlite</div>
-          <div
-            style={{ fontWeight: 600, color: view === 'upload' ? '#3b4cca' : '#444', cursor: 'pointer' }}
-            onClick={() => setView('upload')}
-          >
-            + Nuevo
-          </div>
-          <div
-            style={{ fontWeight: 600, color: view === 'files' ? '#3b4cca' : '#444', cursor: 'pointer' }}
-            onClick={handleShowFiles}
-          >
-            📄 Archivos
-          </div>
-          <div
-            style={{ fontWeight: 600, color: '#444', cursor: 'pointer' }}
-            onClick={handleGoProfile}
-          >
-            👤 Perfil
-          </div>
-        </nav>
-      )}
-      {/* Contenido principal */}
+      <UploadMenu
+        isMobile={isMobile}
+        view={view}
+        setView={setView}
+        handleShowFiles={handleShowFiles}
+        handleGoProfile={handleGoProfile}
+      />
       <main
         style={{
           flex: 1,
@@ -279,185 +225,27 @@ const UploadPage = () => {
         }}
       >
         {view === 'upload' && (
-          <div
-            style={{
-              width: isMobile ? '100%' : 500,
-              maxWidth: isMobile ? '100%' : '90%',
-              marginBottom: 32,
-              padding: isMobile ? 0 : undefined,
-            }}
-          >
-            <h2
-              style={{
-                fontSize: isMobile ? 22 : 28,
-                fontWeight: 700,
-                marginBottom: 16,
-                textAlign: isMobile ? 'center' : 'left',
-              }}
-            >
-              Subir Archivo
-            </h2>
-            <div
-              style={{
-                border: '2px dashed #c3c8d4',
-                borderRadius: 12,
-                padding: isMobile ? 18 : 40,
-                textAlign: 'center',
-                background: '#fff',
-                marginBottom: 32,
-              }}
-            >
-              <div style={{ fontWeight: 600, fontSize: isMobile ? 15 : 18, marginBottom: 8 }}>
-                Selecciona y sube tus archivos de audio aca
-              </div>
-              <div style={{ color: '#666', fontSize: isMobile ? 13 : 15, marginBottom: 20 }}>
-                Soporta audio en formato MP3
-              </div>
-              <button
-                type="button"
-                onClick={handleSelectFiles}
-                style={{
-                  background: '#f5f6fa',
-                  border: '1px solid #c3c8d4',
-                  borderRadius: 8,
-                  padding: isMobile ? '8px 18px' : '10px 28px',
-                  fontWeight: 600,
-                  fontSize: isMobile ? 14 : 16,
-                  cursor: 'pointer',
-                }}
-                disabled={loading}
-              >
-                {loading ? 'Subiendo...' : 'Select files'}
-              </button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                style={{ display: 'none' }}
-                multiple={false}
-                accept="audio/mp3,audio/mpeg"
-                onChange={handleFileChange}
-              />
-              {error && <div style={{ color: 'red', marginTop: 16 }}>{error}</div>}
-            </div>
-            <textarea
-              placeholder="Aquí aparecerá la transcripción..."
-              style={{
-                width: '100%',
-                minHeight: isMobile ? 120 : 180,
-                border: '1px solid #ddd',
-                borderRadius: 8,
-                padding: isMobile ? 10 : 16,
-                fontSize: isMobile ? 15 : 17,
-                resize: 'vertical',
-                background: '#f8f9fb',
-                marginBottom: 16,
-                color: '#111',
-              }}
-              value={description}
-              onChange={e => setDescription(e.target.value)}
-              disabled={loading}
-            />
-            <button
-              onClick={handleSave}
-              style={{
-                width: '100%',
-                background: '#3b4cca',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 8,
-                padding: isMobile ? '10px 0' : '14px 0',
-                fontWeight: 700,
-                fontSize: isMobile ? 16 : 18,
-                cursor: 'pointer',
-                marginBottom: 8,
-              }}
-              disabled={loading || !description}
-            >
-              Guardar
-            </button>
-          </div>
+          <UploadForm
+            isMobile={isMobile}
+            fileInputRef={fileInputRef}
+            handleSelectFiles={handleSelectFiles}
+            handleFileChange={handleFileChange}
+            loading={loading}
+            error={error}
+            description={description}
+            setDescription={setDescription}
+            handleSave={handleSave}
+          />
         )}
         {view === 'files' && (
-          <div
-            style={{
-              width: isMobile ? '100%' : 700,
-              maxWidth: isMobile ? '100%' : '95%',
-              marginBottom: 32,
-              padding: isMobile ? 0 : undefined,
-            }}
-          >
-            <h2
-              style={{
-                fontSize: isMobile ? 20 : 28,
-                fontWeight: 700,
-                marginBottom: 24,
-                textAlign: isMobile ? 'center' : 'left',
-              }}
-            >
-              Mis archivos
-            </h2>
-            {filesLoading ? (
-              <div style={{ fontSize: 18 }}>Cargando archivos...</div>
-            ) : filesError ? (
-              <div style={{ color: 'red', fontSize: 16 }}>{filesError}</div>
-            ) : (
-              <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px #0001', overflow: 'hidden' }}>
-                <thead>
-                  <tr style={{ background: '#f5f6fa', textAlign: 'left' }}>
-                    <th style={{ padding: '14px 18px', fontWeight: 700, fontSize: 16 }}>Nombre</th>
-                    <th style={{ padding: '14px 18px', fontWeight: 700, fontSize: 16 }}>Fecha</th>
-                    <th style={{ padding: '14px 18px', fontWeight: 700, fontSize: 16 }}>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {files.length === 0 ? (
-                    <tr><td colSpan={3} style={{ padding: 24, textAlign: 'center', color: '#888' }}>No hay archivos guardados.</td></tr>
-                  ) : (
-                    files.map((file, idx) => (
-                      <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
-                        <td style={{ padding: '12px 18px' }}>{file.nombre}</td>
-                        <td style={{ padding: '12px 18px' }}>{new Date(file.fecha).toLocaleDateString('es-ES')}</td>
-                        <td style={{ padding: '12px 18px' }}>
-                          <div style={{ display: 'flex', gap: 8 }}>
-                            <button
-                              onClick={() => handleViewFile(file)}
-                              style={{
-                                padding: '6px 12px',
-                                border: 'none',
-                                borderRadius: 4,
-                                background: '#3b4cca',
-                                color: '#fff',
-                                cursor: 'pointer',
-                                fontSize: 14,
-                                fontWeight: 500
-                              }}
-                            >
-                              Ver
-                            </button>
-                            <button
-                              onClick={() => handleDeleteFile(file)}
-                              style={{
-                                padding: '6px 12px',
-                                border: 'none',
-                                borderRadius: 4,
-                                background: '#e53935',
-                                color: '#fff',
-                                cursor: 'pointer',
-                                fontSize: 14,
-                                fontWeight: 500
-                              }}
-                            >
-                              Eliminar
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            )}
-          </div>
+          <FilesList
+            isMobile={isMobile}
+            files={files}
+            filesLoading={filesLoading}
+            filesError={filesError}
+            handleViewFile={handleViewFile}
+            handleDeleteFile={handleDeleteFile}
+          />
         )}
       </main>
       
