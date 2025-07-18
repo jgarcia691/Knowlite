@@ -2,7 +2,7 @@
 
 // Funciones para interactuar con la API de libros
 
-const BOOKS_API_URL = import.meta.env.VITE_BOOKS_API_URL;
+const BOOKS_API_URL = 'https://knowlite-backend-git-temp-jose-garcias-projects-05f9301a.vercel.app';
 
 export async function createBook(bookData) {
   // bookData: { autores, titulo, categoria, fechaPublicacion, pdfBase64 }
