@@ -14,6 +14,7 @@ import LoginPage from './components/auth/LoginPage';
 import SignUpPage from './components/auth/SignUpPage';
 import UploadPage from './components/upload/UploadPage';
 import ProfilePage from './components/auth/ProfilePage';
+import MainPage from './components/books/MainPage';
 import './App.css'
 
 function Landing() {
@@ -34,7 +35,11 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<MainPage />} />
+          {/* Rutas para gestión de libros, por ejemplo: */}
+          {/* <Route path="/books/:id" element={<BookDetailsPage />} /> */}
+          {/* <Route path="/books/new" element={<BookForm />} /> */}
+          {/* <Route path="/books/:id/edit" element={<BookForm editMode />} /> */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/upload" element={<UploadPage />} />
