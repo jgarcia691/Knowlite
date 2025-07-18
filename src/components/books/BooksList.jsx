@@ -7,8 +7,8 @@ const BooksList = ({ books, onViewDetails }) => {
   // Ordenar por fechaSubida descendente
   const sortedBooks = [...books].sort((a, b) => new Date(b.fechaSubida) - new Date(a.fechaSubida));
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', marginTop: 32 }}>
-      <h2 style={{ textAlign: 'center', marginBottom: 18 }}>Últimos libros subidos</h2>
+    <div style={{ maxWidth: 900, margin: '0 auto', marginTop: 32 }}>
+      <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: 28, color: '#222' }}>Últimos libros subidos</h2>
       <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px #0001', overflow: 'hidden' }}>
         <thead>
           <tr style={{ background: '#f5f6fa', textAlign: 'left' }}>

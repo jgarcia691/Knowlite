@@ -34,17 +34,21 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          {/* Rutas para gestión de libros, por ejemplo: */}
-          {/* <Route path="/books/:id" element={<BookDetailsPage />} /> */}
-          {/* <Route path="/books/new" element={<BookForm />} /> */}
-          {/* <Route path="/books/:id/edit" element={<BookForm editMode />} /> */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/upload" element={<UploadPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-        </Routes>
+        <Navbar />
+        <div style={{ minHeight: 'calc(100vh - 160px)' }}>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            {/* Rutas para gestión de libros, por ejemplo: */}
+            {/* <Route path="/books/:id" element={<BookDetailsPage />} /> */}
+            {/* <Route path="/books/new" element={<BookForm />} /> */}
+            {/* <Route path="/books/:id/edit" element={<BookForm editMode />} /> */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/upload" element={<UploadPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Routes>
+        </div>
+        <Footer />
       </Router>
     </AuthProvider>
   );

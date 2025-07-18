@@ -20,7 +20,7 @@ const BookForm = ({ onBookCreated }) => {
   const [titulo, setTitulo] = useState('');
   const [autores, setAutores] = useState('');
   const [categoria, setCategoria] = useState('');
-  const [fechaPublicacion, setFechaPublicacion] = useState('');
+  const [anio, setAnio] = useState('');
   const [pdfFile, setPdfFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -41,8 +41,12 @@ const BookForm = ({ onBookCreated }) => {
     e.preventDefault();
     setError('');
     setSuccess('');
-    if (!titulo || !autores || !categoria || !fechaPublicacion || !pdfFile) {
+    if (!titulo || !autores || !categoria || !anio || !pdfFile) {
       setError('Completa todos los campos y selecciona un PDF.');
+      return;
+    }
+    if (!/^\d{4}$/.test(anio)) {
+      setError('El año debe tener 4 dígitos.');
       return;
     }
     setLoading(true);
@@ -54,14 +58,14 @@ const BookForm = ({ onBookCreated }) => {
         titulo,
         autores: autoresArr,
         categoria,
-        fechaPublicacion,
+        fechaPublicacion: `${anio}-01-01`,
         pdfBase64
       });
       setSuccess('¡Libro subido exitosamente!');
       setTitulo('');
       setAutores('');
       setCategoria('');
-      setFechaPublicacion('');
+      setAnio('');
       setPdfFile(null);
       if (fileInputRef.current) fileInputRef.current.value = '';
       if (onBookCreated) onBookCreated();
@@ -110,11 +114,14 @@ const BookForm = ({ onBookCreated }) => {
         ))}
       </select>
       <input
-        type="date"
-        placeholder="Fecha de publicación"
-        value={fechaPublicacion}
-        onChange={e => setFechaPublicacion(e.target.value)}
+        type="number"
+        placeholder="Año de publicación (YYYY)"
+        value={anio}
+        onChange={e => setAnio(e.target.value)}
         style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #ccc' }}
+        min="1000"
+        max="9999"
+        required
       />
       <input
         ref={fileInputRef}
